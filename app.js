@@ -1,20 +1,72 @@
 /* eslint-disable no-console */
+const path = require(`path`);
 const fs = require(`fs-extra`);
 const puppeteer = require(`puppeteer`);
+const program = require(`commander`);
+
+program
+  .version(`0.0.2`)
+  .description(`An app to scrape data from websites`)
+  .option(
+    `-i, --input <inputFolder>`,
+    `Script with instructions on what data to scrape`,
+  )
+  .option(
+    `-o, --output [outputFile]`,
+    `File with exported JSON object`,
+    `output`,
+  )
+  .option(
+    `-r, --resource-types [list]`,
+    `Comma-separated list of resource types`,
+  )
+  .option(`-n, --no-headless`, `Disables default headless mode`)
+  .parse(process.argv);
+
+const regex = (() => {
+  const resTypes = [
+    `stylesheet`,
+    `image`,
+    `media`,
+    `font`,
+    `script`,
+    `texttrack`,
+    `xhr`,
+    `fetch`,
+    `eventsource`,
+    `websocket`,
+    `manifest`,
+    `other`,
+  ];
+
+  const resTypeArgs = program.resourceTypes
+    ? program.resourceTypes.split(`,`)
+    : [];
+
+  return RegExp(
+    `^(${resTypes.filter(val => !resTypeArgs.includes(val)).join(`|`)})$`,
+  );
+})();
 
 (async () => {
-  const input = process.argv[2]; // This argument provides the input
-  const browser = await puppeteer.launch(); // Launch the browser window...
-  const page = await browser.newPage(); // ... and open a new tab
+  const { input, output, headless } = program;
 
-  // List of URIs to scrape
-  const urls = await fs.readJson(`./data/${input}/input.json`);
-  const scrapeFunc = require(`./data/${input}`);
+  // Launch the browser window...
+  const browser = await puppeteer.launch({
+    headless: headless,
+    args: [
+      //   `--remote-debugging-port=9222`,
+      headless ? `--auto-open-devtools-for-tabs` : null,
+    ],
+  });
 
-  // Enables request interception to block unwanted resources
+  // Open a new tab
+  const [page] = await browser.pages();
+  // await page.waitFor(3000);
+
+  // Interrupt all requests (by default)
   await page.setRequestInterception(true);
   page.on(`request`, req => {
-    const regex = /^(script|stylesheet|image|font|xhr|texttrack|eventsource|fetch|websocket|manifest|other)$/;
     if (req.resourceType().match(regex)) {
       req.abort();
     } else {
@@ -22,15 +74,12 @@ const puppeteer = require(`puppeteer`);
     }
   });
 
-  // Scrape for data
-  let data = [];
-  for (let url of urls) {
-    console.log(url);
-    await page.goto(url);
-    data.push(await page.evaluate(scrapeFunc));
-  }
+  const inputData = await fs.readJson(`./data/${input}/index.json`);
 
-  await fs.outputJson(`./output/${input}.json`, data, {
+  const scrapeFunc = require(`./data/${input}`);
+  const outputData = await scrapeFunc(page, inputData);
+
+  await fs.outputJson(`./output/${output}.json`, outputData, {
     spaces: 2,
   });
 

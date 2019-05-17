@@ -1,24 +1,16 @@
-module.exports = () => {
-  const stripAndSplit = str => {
-    if (str.includes(`\n\n`)) {
-      return stripAndSplit(str.replace(`\n\n`, `\n`));
-    }
-    if (str.includes(`\n(`)) {
-      return stripAndSplit(str.replace(`\n(`, ` (`));
-    }
-    if (str.includes(`\n`)) {
-      return stripAndSplit(str.replace(`\n`, `|`));
-    }
+const { trimNewlines } = require(`./funcs`);
 
-    return str.split(`|`);
-  };
+const scrapeName = () =>
+  document.querySelector(`[data-source='Title']`).innerText;
 
+const scrapeImageURI = () =>
+  document.querySelector(`.pi-image-thumbnail`).src.split(`/revision`)[0];
+
+const scrapeTitles = async () => {
   const formatTitles = node => {
     node
       .querySelectorAll(`a br`)
-      .forEach(n =>
-        n.parentElement.replaceChild(document.createTextNode(` `), n),
-      );
+      .forEach(n => n.replaceWith(document.createTextNode(` `)));
 
     return node.innerText;
   };
@@ -27,12 +19,29 @@ module.exports = () => {
     `[data-source='Titles'] .pi-data-value`,
   );
 
-  return {
-    url: document.URL,
-    name: document.querySelector(`[data-source='Title']`).innerText,
-    img: document
-      .querySelector(`.pi-image-thumbnail`)
-      .src.split(`/revision`)[0],
-    titles: titlesNode ? stripAndSplit(formatTitles(titlesNode)) : [],
-  };
+  return titlesNode ? formatTitles(titlesNode) : null;
+};
+
+module.exports = async (page, input) => {
+  let data = [];
+  for (let url of input) {
+    await page.goto(url);
+    const d = {
+      url,
+      name: await page.evaluate(scrapeName),
+      img: await page.evaluate(scrapeImageURI),
+    };
+    console.log(`=========================================\n${d.name}`);
+    const titles = await page.evaluate(scrapeTitles);
+    data.push(
+      titles
+        ? {
+            ...d,
+            titles: trimNewlines(titles),
+          }
+        : d,
+    );
+  }
+
+  return data;
 };

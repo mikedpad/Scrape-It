@@ -1,0 +1,14 @@
+[
+  {
+    "name": "male",
+    "url": "https://names.mongabay.com/male_names.htm"
+  },
+  {
+    "name": "female",
+    "url": "https://names.mongabay.com/female_names.htm"
+  },
+  {
+    "name": "surname",
+    "url": "https://names.mongabay.com/most_common_surnames.htm"
+  }
+]

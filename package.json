@@ -4,7 +4,8 @@
   "description": "Web data scraping using Puppeteer (headless Chrome)",
   "main": "index.js",
   "scripts": {
-    "start": "npm run minecraft",
+    "start": "npm run babyNames",
+    "babyNames": "node app.js -i BabyNames -o BabyNames",
     "gameOfThrones": "node app.js -i GameOfThrones -o GameOfThrones",
     "minecraft": "node app.js -i Minecraft -o Minecraft"
   },
@@ -13,11 +14,11 @@
   "dependencies": {
     "commander": "^2.20.0",
     "fs-extra": "^7.0.1",
-    "puppeteer": "^1.18.1"
+    "puppeteer": "^1.19.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.0"
+    "eslint-plugin-import": "^2.18.2"
   }
 }

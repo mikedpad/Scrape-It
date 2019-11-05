@@ -1,10 +1,10 @@
 {
   "name": "scrape-it",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Web data scraping using Puppeteer (headless Chrome)",
   "main": "index.js",
   "scripts": {
-    "start": "npm run babyNames",
+    "start": "npm run minecraft",
     "babyNames": "node app.js -i BabyNames -o BabyNames",
     "gameOfThrones": "node app.js -i GameOfThrones -o GameOfThrones",
     "minecraft": "node app.js -i Minecraft -o Minecraft"
@@ -12,13 +12,13 @@
   "author": "Michael Daniel Padilla <michaeldpadilla@gmail.com> (https://mikedpad.com)",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.20.0",
-    "fs-extra": "^7.0.1",
-    "puppeteer": "^1.19.0"
+    "commander": "^4.0.0",
+    "fs-extra": "^8.1.0",
+    "puppeteer": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
   }
 }

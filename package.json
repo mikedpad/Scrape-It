@@ -2,9 +2,9 @@
   "name": "scrape-it",
   "version": "0.1.3",
   "description": "Web data scraping using Puppeteer (headless Chrome)",
-  "main": "index.js",
   "scripts": {
     "start": "npm run minecraft",
+    "lint": "eslint 'src/**/*.{js,jsx}'",
     "babyNames": "node app.js -i BabyNames -o BabyNames",
     "gameOfThrones": "node app.js -i GameOfThrones -o GameOfThrones",
     "minecraft": "node app.js -i Minecraft -o Minecraft"

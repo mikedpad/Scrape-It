@@ -1,7 +1,8 @@
 {
+  "extends": ["airbnb-base", "prettier"],
   "env": {
-    "node": true,
-    "browser": true
+    "browser": true,
+    "node": true
   },
   "parserOptions": {
     "ecmaVersion": 2018,
@@ -9,10 +10,33 @@
   },
   "root": true,
   "rules": {
+    "no-bitwise": [
+      2,
+      {
+        "int32Hint": true
+      }
+    ],
+    "no-console": [1, { "allow": ["warn", "error"] }],
+    "no-nested-ternary": 0,
+    "no-plusplus": [
+      0,
+      {
+        "int32Hint": true
+      }
+    ],
     "no-unused-expressions": [
       2,
       {
         "allowTernary": true
+      }
+    ],
+    "object-curly-newline": [
+      2,
+      {
+        "ObjectExpression": { "consistent": true },
+        "ObjectPattern": { "consistent": true },
+        "ImportDeclaration": { "multiline": true },
+        "ExportDeclaration": { "multiline": true }
       }
     ],
     "quotes": [
@@ -20,6 +44,27 @@
       "backtick",
       {
         "avoidEscape": true
+      }
+    ],
+    "import/extensions": [
+      2,
+      {
+        "js": "never",
+        "json": "always"
+      }
+    ],
+    "import/order": [
+      2,
+      {
+        "newlines-between": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
       }
     ]
   }

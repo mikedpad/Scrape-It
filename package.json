@@ -5,8 +5,8 @@
   "scripts": {
     "start": "npm run gameOfThrones",
     "lint": "eslint 'src/**/*.{js,jsx}'",
-    "babyNames": "node app.js -i BabyNames -o BabyNames",
-    "gameOfThrones": "node app.js -i GameOfThrones -o GameOfThrones",
+    "babyNames": "node app.js -i BabyNames -o BabyNames -n",
+    "gameOfThrones": "node app.js -i GameOfThrones -o GameOfThrones -n",
     "minecraft": "node app.js -i Minecraft -o Minecraft"
   },
   "author": "Michael Daniel Padilla <michaeldpadilla@gmail.com> (https://mikedpad.com)",
@@ -19,6 +19,8 @@
   "devDependencies": {
     "eslint": "^7.13.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "^2.2.1"
   }
 }

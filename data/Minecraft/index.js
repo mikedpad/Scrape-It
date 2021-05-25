@@ -1,18 +1,14 @@
-const scrape = () => {
-  return Array.from(
-    document.querySelectorAll(`.wikitable.sortable tr td:first-child`),
-  ).reduce((acc, node) => {
-    const { lastElementChild: a } = node;
-    acc.push({
-      name: a.title,
-      href: a.href,
-    });
+const scrape = () =>
+  Array.from(
+    document.querySelectorAll(
+      `#mw-content-text > div > div:nth-child(26) > div.collapsible-content > div > ul li`,
+    ),
+  ).reduce(
+    (acc, { lastElementChild: { title, href } }) => [...acc, { title, href }],
+    [],
+  );
 
-    return acc;
-  }, []);
-};
-
-module.exports = async (page, input) => {
-  await page.goto(input[0]);
-  return await page.evaluate(scrape);
+module.exports = async page => {
+  await page.goto(`https://minecraft.gamepedia.com/Block`);
+  return page.evaluate(scrape);
 };
